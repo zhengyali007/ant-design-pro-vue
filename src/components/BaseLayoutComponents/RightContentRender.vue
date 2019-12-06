@@ -1,5 +1,5 @@
 <template>
-  <div :class="['ant-pro-global-header-index-right', `ant-pro-global-header-index-${theme}`]">
+  <div :class="['ant-pro-global-header-index-right', layout === 'topmenu' && `ant-pro-global-header-index-${theme}`]">
     <account class="ant-pro-global-header-index-action" />
     <select-lang class="ant-pro-global-header-index-action" />
   </div>
@@ -13,6 +13,10 @@ export default {
   name: 'RightContentRender',
   props: {
     theme: {
+      type: String,
+      required: true
+    },
+    layout: {
       type: String,
       required: true
     }
