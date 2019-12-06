@@ -13,9 +13,18 @@
     :handleCollapse="handleCollapse"
     :logo="logoRender"
     :i18nRender="i18nRender"
-    :rightContentRender="rightContentRender"
-    :footerRender="footerRender"
   >
+    <template v-slot:rightContentRender>
+      <div :class="['ant-pro-global-header-index-right', layout === 'topmenu' && `ant-pro-global-header-index-${theme}`]">
+        <account class="ant-pro-global-header-index-action" />
+        <select-lang class="ant-pro-global-header-index-action" />
+      </div>
+    </template>
+    <template v-slot:footerRender>
+      <div class="footer custom-render">
+        <span>Custom footer</span>
+      </div>
+    </template>
     <router-view />
   </pro-layout>
 </template>
@@ -24,7 +33,8 @@
 import ProLayout from '@ant-design-vue/pro-layout'
 import { asyncRouterMap } from '../config/router.config'
 import { i18nRender } from '../locales'
-import { RightContentRender, FooterRender } from '../components/BaseLayoutComponents'
+import Account from '../components/Account'
+import SelectLang from '../components/SelectLang'
 import LogoSvg from '../assets/logo.svg?inline'
 
 export default {
@@ -70,16 +80,12 @@ export default {
     },
     logoRender () {
       return <LogoSvg />
-    },
-    rightContentRender (h, props) {
-      return <RightContentRender theme={this.theme} />
-    },
-    footerRender () {
-      return <FooterRender />
     }
   },
   components: {
-    ProLayout
+    ProLayout,
+    Account,
+    SelectLang
   }
 }
 </script>
