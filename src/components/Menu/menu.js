@@ -67,7 +67,7 @@ const renderMenuItem = (h, menu, i18nRender) => {
 const renderSubMenu = (h, menu, i18nRender) => {
   const itemArr = []
   if (!menu.hideChildrenInMenu) {
-    menu.children.forEach(item => itemArr.push(this.renderItem(item)))
+    menu.children.forEach(item => itemArr.push(renderItem(h, item, i18nRender)))
   }
   return (
     <Menu.SubMenu {...{ key: menu.path }}>
