@@ -42,6 +42,15 @@ function setI18nLanguage (lang) {
   return lang
 }
 
+/**
+ * i18n Render
+ * @param key
+ * @returns rendered string
+ */
+export function i18nRender (key) {
+  return i18n.t(key)
+}
+
 export function loadLanguageAsync (lang = defaultLang) {
   return new Promise(resolve => {
     // 缓存语言设置
