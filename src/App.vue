@@ -7,18 +7,21 @@
 </template>
 
 <script>
-import zhCN from 'ant-design-vue/lib/locale-provider/zh_CN'
+import i18n from '@/locales'
 import { AppDeviceEnquire } from '@/utils/mixin'
+import { mixin } from '@/store/i18n-mixin'
 
 export default {
-  mixins: [AppDeviceEnquire],
+  mixins: [AppDeviceEnquire, mixin],
   data () {
     return {
-      locale: zhCN
+      locale: {}
     }
   },
-  mounted () {
-
+  created () {
+    this.$watch('currentLang', () => {
+      this.locale = i18n.getLocaleMessage(this.currentLang).antLocale
+    })
   }
 }
 </script>

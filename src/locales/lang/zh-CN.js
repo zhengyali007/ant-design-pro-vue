@@ -1,4 +1,6 @@
+import zhCN from 'ant-design-vue/es/locale-provider/zh_CN'
 export default {
+  antLocale: zhCN,
   menu: {
     index: '首页',
     dashboard: '仪表盘',
