@@ -1,4 +1,4 @@
-// with polyfills
+// with polyfills 处理浏览器兼容性 兼容es5 es6新语法
 import 'core-js/stable'
 import 'regenerator-runtime/runtime'
 
@@ -12,8 +12,8 @@ import { VueAxios } from './utils/request'
 // WARNING: `mockjs` NOT SUPPORT `IE` PLEASE DO NOT USE IN `production` ENV.
 import './mock'
 
-import bootstrap from './core/bootstrap'
-import './core/lazy_use'
+import bootstrap from './core/bootstrap' // 初始化主题、样式等
+import './core/lazy_use' // 引入需要的依赖插件以及组件
 import './permission' // permission control
 import './utils/filter' // global filter
 import './components/global.less'

@@ -11,6 +11,10 @@ export const asyncRouterMap = [
     meta: { title: '首页' },
     redirect: '/dashboard/workplace',
     children: [
+      // 自定义路由
+      {
+        path: ''
+      },
       // dashboard
       {
         path: 'dashboard',

@@ -10,9 +10,11 @@ import { ACCESS_TOKEN } from '@/store/mutation-types'
 
 NProgress.configure({ showSpinner: false }) // NProgress Configuration
 
-const whiteList = ['login', 'register', 'registerResult'] // no redirect whitelist
-const defaultRoutePath = '/dashboard/workplace'
+const whiteList = ['login', 'register', 'registerResult'] // no redirect whitelist 免登陆白名单
+const defaultRoutePath = '/dashboard/workplace' // 进入系统默认打开路由
 
+// 路由导航钩子
+// 1.进入路由之前 进行路由拦截
 router.beforeEach((to, from, next) => {
   NProgress.start() // start progress bar
   to.meta && (typeof to.meta.title !== 'undefined' && setDocumentTitle(`${to.meta.title} - ${domTitle}`))
@@ -66,6 +68,7 @@ router.beforeEach((to, from, next) => {
   }
 })
 
+// 2. 进入路由之后
 router.afterEach(() => {
   NProgress.done() // finish progress bar
 })
