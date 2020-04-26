@@ -12,9 +12,9 @@ export const asyncRouterMap = [
     redirect: '/dashboard/workplace',
     children: [
       // 自定义路由
-      {
-        path: ''
-      },
+      // {
+      //   path: ''
+      // },
       // dashboard
       {
         path: 'dashboard',
