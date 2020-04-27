@@ -12,9 +12,28 @@ export const asyncRouterMap = [
     redirect: '/dashboard/workplace',
     children: [
       // 自定义路由
-      // {
-      //   path: ''
-      // },
+      // 1. 系统设置
+      {
+        path: 'system',
+        name:'system',
+        redirect:'/menu/menuList',
+        component: RouteView,
+        meta:{title:'系统管理',keepAlive: true, icon: bxAnaalyse, permission: [ 'system' ]},
+        children:[
+          {
+            path: 'menu',
+            name: 'menu',
+            component: () => import('@/views/system/menu/MenuList'),
+            meta: { title: '菜单列表', keepAlive: false, permission: [ 'system' ] }
+          },
+          {
+            path: 'role/:pageNo([1-9]\\d*)?',
+            name: 'role',
+            component: () => import('@/views/system/role/RoleList'),
+            meta: { title: '角色列表', keepAlive: false, permission: [ 'system' ] }
+          },
+        ]
+      },
       // dashboard
       {
         path: 'dashboard',
@@ -311,12 +330,12 @@ export const asyncRouterMap = [
                 component: () => import('@/views/other/RoleList'),
                 meta: { title: '角色列表', keepAlive: true }
               },
-              {
-                path: '/other/list/system-role',
-                name: 'SystemRole',
-                component: () => import('@/views/role/RoleList'),
-                meta: { title: '角色列表2', keepAlive: true }
-              },
+              // {
+              //   path: '/other/list/system-role',
+              //   name: 'SystemRole',
+              //   component: () => import('@/views/role/RoleList'),
+              //   meta: { title: '角色列表2', keepAlive: true }
+              // },
               {
                 path: '/other/list/permission-list',
                 name: 'PermissionList',
