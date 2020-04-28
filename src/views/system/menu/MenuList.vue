@@ -64,18 +64,7 @@
     <div class="table-operator">
       <a-button type="primary" icon="plus" @click="$refs.createModal.add()">新建</a-button>
       <a-button type="danger" icon="minus" @click="$refs.createModal.add()">删除</a-button>
-<!--      <a-button type="dashed" @click="tableOption">{{ optionAlertShow && '关闭' || '开启' }} alert</a-button>-->
-<!--      <a-dropdown v-action:edit v-if="selectedRowKeys.length > 0">-->
-<!--        <a-menu slot="overlay">-->
-<!--          <a-menu-item key="1"><a-icon type="delete" />删除</a-menu-item>-->
-<!--          <a-menu-item key="2"><a-icon type="lock" />锁定</a-menu-item>-->
-<!--        </a-menu>-->
-<!--        <a-button style="margin-left: 8px">-->
-<!--          批量操作 <a-icon type="down" />-->
-<!--        </a-button>-->
-<!--      </a-dropdown>-->
     </div>
-
     <s-table
       ref="table"
       size="default"

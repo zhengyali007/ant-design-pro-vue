@@ -17,7 +17,7 @@ export const asyncRouterMap = [
         path: 'system',
         name:'system',
         redirect:'/menu/menuList',
-        component: RouteView,
+        component: PageView,
         meta:{title:'系统管理',keepAlive: true, icon: bxAnaalyse, permission: [ 'system' ]},
         children:[
           {
@@ -32,6 +32,22 @@ export const asyncRouterMap = [
             component: () => import('@/views/system/role/RoleList'),
             meta: { title: '角色列表', keepAlive: false, permission: [ 'system' ] }
           },
+        ]
+      },
+      // 1. 示例
+      {
+        path: 'example',
+        name:'example',
+        redirect:'/example/iframe',
+        component: PageView,
+        meta:{title:'示例',keepAlive: true, icon: bxAnaalyse, permission: [ 'example' ]},
+        children:[
+          {
+            path: 'iframe',
+            name: 'iframe',
+            component: () => import('@/views/example/IframePage'),
+            meta: { title: '嵌入iframe示例', keepAlive: false, permission: [ 'example' ] }
+          }
         ]
       },
       // dashboard
