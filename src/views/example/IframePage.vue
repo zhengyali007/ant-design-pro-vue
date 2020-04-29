@@ -8,16 +8,20 @@
 <template>
     <div style="height: 100%">
       <div class="table-operator">
-        <a-button type="primary">iframe弹框示例</a-button>
-        <a-button type="primary">固定iframe视图大小的页面示例</a-button>
+        <a-button type="primary" @click="btnClick">iframe弹框示例</a-button>
       </div>
       <iframe class="iframe-style" :src="url" frameborder="no"></iframe>
+      <iframe-model ref="iframeModel" @handleOk="handleOK"/>
     </div>
 </template>
 
 <script>
+import IframeModel from '../../components/IframeDialog/IframeDialog'
 export default {
   name: 'IframePage',
+  components:{
+    IframeModel
+  },
   data(){
     return {
       url: 'https://picsum.photos/',
@@ -26,11 +30,21 @@ export default {
     }
   },
   mounted() {
-    this.openDialog()
   },
   methods:{
-    openDialog() {
-      // console.log(this.$dialog)
+    btnClick() {
+      let value = {}
+      value = {
+        title: 'iframe弹框示例', // 弹框标题，可选，默认为"弹框"
+        width: 800,  // 弹框宽度（px），可选，默认为600
+        height: 600,// 弹框高度（px），可选，默认为400
+        url: 'https://www.tapd.cn/', // iframe地址，必选，不写则显示空白
+        okText: '保存', // 确定按钮文字，可选，默认为"确定"
+      }
+      this.$refs.iframeModel.openDialog(value)
+    },
+    handleOK() {
+      console.log('ok')
     }
   }
 }
