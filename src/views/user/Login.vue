@@ -12,12 +12,12 @@
         :tabBarStyle="{ textAlign: 'center', borderBottom: 'unset' }"
       >
         <a-tab-pane key="tab1" tab="账号密码登录">
-          <a-alert v-if="isLoginError" type="error" showIcon style="margin-bottom: 24px;" message="账户或密码错误（admin/ant.design )" />
+          <a-alert v-if="isLoginError" type="error" showIcon style="margin-bottom: 24px;" message="账户或密码错误（usernmame: admin/user, password: 123456 )" />
           <a-form-item>
             <a-input
               size="large"
               type="text"
-              placeholder="账户名"
+              placeholder="账户名: admin/user"
               v-decorator="[
                 'username',
                 {rules: [{ required: true, message: '请输入帐户名或邮箱地址' }, { validator: handleUsernameOrEmail }], validateTrigger: 'change'}
@@ -32,7 +32,7 @@
               size="large"
               type="password"
               autocomplete="false"
-              placeholder="密码"
+              placeholder="密码: 123456"
               v-decorator="[
                 'password',
                 {rules: [{ required: true, message: '请输入密码' }], validateTrigger: 'blur'}

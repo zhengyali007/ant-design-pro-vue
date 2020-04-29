@@ -55,11 +55,9 @@
           </a-col>
         </a-row>
       </div>
-      <span slot="action" slot-scope="text, record">
-        <a  v-action:update @click="handleEdit(record)">编辑</a>
-        <a-divider  v-action:delete type="vertical" />
+      <span slot="action" slot-scope="text, record" class="table-action">
+        <a  v-action:edit @click="handleEdit(record)">编辑</a>
         <a  v-action:delete @click="$refs.modal.openModal(record)">删除</a>
-        <a-divider  v-action:enable type="vertical" />
         <a  v-action:enable v-if="record.status == 1" >禁用</a>
         <a  v-action:enable v-else >启用</a>
       </span>

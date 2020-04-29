@@ -11,7 +11,7 @@ import { ACCESS_TOKEN } from '@/store/mutation-types'
 NProgress.configure({ showSpinner: false }) // NProgress Configuration
 
 const whiteList = ['login', 'register', 'registerResult'] // no redirect whitelist 免登陆白名单
-const defaultRoutePath = '/index/index' // 进入系统默认打开路由
+const defaultRoutePath = '/index' // 进入系统默认打开路由
 
 // 路由导航钩子
 // 1.进入路由之前 进行路由拦截
@@ -19,6 +19,8 @@ router.beforeEach((to, from, next) => {
   NProgress.start() // start progress bar
   to.meta && (typeof to.meta.title !== 'undefined' && setDocumentTitle(`${to.meta.title} - ${domTitle}`))
   if (Vue.ls.get(ACCESS_TOKEN)) {
+    // mock 测试不同角色返回不同的userinfo
+    const id = Vue.ls.get(ACCESS_TOKEN) == 'admin token test' ? 1 : 2 // 1为admin用户 2为user用户
     /* has token */
     if (to.path === '/user/login') {
       next({ path: defaultRoutePath })
@@ -26,7 +28,7 @@ router.beforeEach((to, from, next) => {
     } else {
       if (store.getters.roles.length === 0) {
         store
-          .dispatch('GetInfo')
+          .dispatch('GetInfo',{id})
           .then(res => {
             const roles = res.result && res.result.role
             store.dispatch('GenerateRoutes', { roles }).then(() => {
@@ -40,7 +42,8 @@ router.beforeEach((to, from, next) => {
                 next({ ...to, replace: true })
               } else {
                 // 跳转到目的路由
-                next({ path: redirect })
+                next({ path: defaultRoutePath})
+                // next({ path: redirect })
               }
             })
           })

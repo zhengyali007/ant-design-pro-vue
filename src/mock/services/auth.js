@@ -12,7 +12,12 @@ const login = (options) => {
   if (!username.includes(body.username) || !password.includes(body.password)) {
     return builder({ isLogin: true }, '账户或密码错误', 401)
   }
-
+  let token = ''
+  if(body.username == 'admin') {
+    token = 'admin token test'
+  }else {
+    token = 'user token test'
+  }
   return builder({
     'id': Mock.mock('@guid'),
     'name': Mock.mock('@name'),
@@ -28,7 +33,7 @@ const login = (options) => {
     'deleted': 0,
     'roleId': 'admin',
     'lang': 'zh-CN',
-    'token': '4291d7da9005377ec9aec4a71ea837f'
+    'token': token
   }, '', 200, { 'Custom-Header': Mock.mock('@guid') })
 }
 

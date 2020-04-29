@@ -107,7 +107,7 @@ const role = () => {
               'defaultCheck': false
             },
             {
-              'action': 'update',
+              'action': 'edit',
               'describe': '修改',
               'defaultCheck': false
             }, {
@@ -127,8 +127,13 @@ const role = () => {
               'defaultCheck': false
             },
             {
-              'action': 'update',
+              'action': 'edit',
               'describe': '修改',
+              'defaultCheck': false
+            },
+            {
+              'action': 'delete',
+              'describe': '删除',
               'defaultCheck': false
             }],
         },  {
@@ -139,9 +144,9 @@ const role = () => {
       ]
     },
       {
-        'id': 'vip',
-        'name': '会员',
-        'describe': '角色为会员',
+        'id': 'user',
+        'name': '普通用户',
+        'describe': '普通用户',
         'status': 1,
         'creatorId': 'system',
         'createTime': 1497160610259,
@@ -162,10 +167,11 @@ const role = () => {
               'defaultCheck': false
             },
             {
-              'action': 'update',
+              'action': 'edit',
               'describe': '修改',
               'defaultCheck': false
-            }, {
+            },
+            {
               'action': 'delete',
               'describe': '删除',
               'defaultCheck': false
@@ -182,7 +188,7 @@ const role = () => {
               'defaultCheck': false
             },
             {
-              'action': 'update',
+              'action': 'edit',
               'describe': '修改',
               'defaultCheck': false
             }],
@@ -193,9 +199,9 @@ const role = () => {
         }],
       },
       {
-        'id': 'user',
-        'name': '普通用户',
-        'describe': '普通用户，只能查询',
+        'id': 'test',
+        'name': '测试用户',
+        'describe': '测试用户',
         'status': 2,
         'creatorId': 'system',
         'createTime': 1497160610259,
@@ -216,7 +222,7 @@ const role = () => {
               'defaultCheck': false
             },
             {
-              'action': 'update',
+              'action': 'edit',
               'describe': '修改',
               'defaultCheck': false
             }, {

@@ -84,10 +84,10 @@
         <ellipsis :length="4" tooltip>{{ text }}</ellipsis>
       </span>
 
-      <span slot="action" slot-scope="text, record">
+      <span slot="action" slot-scope="text, record" class="table-action">
         <template>
-          <a @click="handleEdit(record)" v-action:update>编辑</a>
-          <a-divider type="vertical" v-action:delete />
+          <a @click="handleEdit(record)" v-action:edit>编辑</a>
+<!--          <a-divider type="vertical" v-action:delete />-->
           <a @click="handleSub(record)" v-action:delete>删除</a>
         </template>
       </span>
@@ -262,3 +262,7 @@ export default {
   }
 }
 </script>
+
+<style scoped>
+
+</style>
