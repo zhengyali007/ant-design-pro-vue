@@ -14,7 +14,7 @@ const menu = (options) =>{
     'data':[
       //系统设置
       {
-        'id': '1',
+        'key': '1',
         'icon': 'dashboard',
         'title': '系统管理',
         'url': '/system', // type为路由时即为路径url，为按钮时即为按钮触发的api
@@ -25,7 +25,7 @@ const menu = (options) =>{
         'sort': 1,
         'children':[
           {
-            'id': '2',
+            'key': '2',
             'icon': '',
             'title': '菜单管理',
             'url': '/system/menu',
@@ -36,7 +36,7 @@ const menu = (options) =>{
             'sort': 1,
             'children': [
               {
-                'id': '3',
+                'key': '3',
                 'icon': 'add',
                 'title': '新建',
                 'url': '/system/menu/add', // api路径
@@ -47,7 +47,7 @@ const menu = (options) =>{
 
               },
               {
-                'id': '4',
+                'key': '4',
                 'parentId': 'system-menu',
                 'icon': 'add',
                 'title': '编辑',
@@ -58,7 +58,7 @@ const menu = (options) =>{
                 'sort': 2,
               },
               {
-                'id': '5',
+                'key': '5',
                 'parentId': 'system-menu',
                 'icon': 'add',
                 'title': '删除',
@@ -71,7 +71,7 @@ const menu = (options) =>{
             ]
           },
           {
-            'id': '6',
+            'key': '6',
             'icon': '',
             'title': '角色管理',
             'url': '/system/role',

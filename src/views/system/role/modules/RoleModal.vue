@@ -1,27 +1,27 @@
 <template>
   <a-modal
     title="操作"
-    :width="800"
+    :width="400"
     :visible="visible"
     :confirmLoading="confirmLoading"
     @ok="handleOk"
     @cancel="handleCancel"
   >
-    <a-steps :current="1">
-      <a-step>
-        <!-- <span slot="title">Finished</span> -->
-        <template slot="title">
-          Finished
-        </template>
-        <span slot="description">This is a description.</span>
-      </a-step>
-      <a-step title="In Progress" description="This is a description." />
-      <a-step title="Waiting" description="This is a description." />
-    </a-steps>
+    <a-tree
+      checkable
+      @expand="onExpand"
+      :expandedKeys="expandedKeys"
+      :autoExpandParent="autoExpandParent"
+      v-model="checkedKeys"
+      @select="onSelect"
+      :selectedKeys="selectedKeys"
+      :treeData="treeData"
+    />
   </a-modal>
 </template>
 
 <script>
+
 import { getPermissions } from '@/api/manage'
 import { actionToObject } from '@/utils/permissions'
 import pick from 'lodash.pick'
@@ -30,113 +30,80 @@ export default {
   name: 'RoleModal',
   data () {
     return {
-      labelCol: {
-        xs: { span: 24 },
-        sm: { span: 5 }
-      },
-      wrapperCol: {
-        xs: { span: 24 },
-        sm: { span: 16 }
-      },
-      visible: false,
+      visible:false,
       confirmLoading: false,
-      mdl: {},
-
-      form: this.$form.createForm(this),
-      permissions: []
+      expandedKeys: [],
+      autoExpandParent: true,
+      checkedKeys: ['1','2','3','4'],
+      selectedKeys: [],
+      treeData:[],
     }
   },
+  watch: {
+    checkedKeys(val) {
+      console.log('onCheck', val)
+    },
+  },
   created () {
-    this.loadPermissions()
+    this.treeData = this.$store.state.user.menu
+    // this.handleMenuList(menu);
+
   },
   methods: {
-    add () {
-      this.edit({ id: 0 })
-    },
-    edit (record) {
-      this.mdl = Object.assign({}, record)
+    // handleMenuList(menu) {
+    //   menu.forEach(item=> {
+    //     menu.key = menu.id
+    //   })
+    // },
+    openModal() {
       this.visible = true
+    },
+    onExpand(expandedKeys) {
+      console.log('onExpand', expandedKeys)
+      // if not set autoExpandParent to false, if children expanded, parent can not collapse.
+      // or, you can remove all expanded children keys.
+      this.expandedKeys = expandedKeys
+      this.autoExpandParent = false
+    },
+    onCheck(checkedKeys) {
+      console.log('onCheck', checkedKeys)
+      this.checkedKeys = checkedKeys
+    },
+    onSelect(selectedKeys, info) {
+      console.log('onSelect', info)
+      this.selectedKeys = selectedKeys
+    },
 
-      // 有权限表，处理勾选
-      if (this.mdl.permissions && this.permissions) {
-        // 先处理要勾选的权限结构
-        const permissionsAction = {}
-        this.mdl.permissions.forEach(permission => {
-          permissionsAction[permission.permissionId] = permission.actionEntitySet.map(entity => entity.action)
-        })
-        // 把权限表遍历一遍，设定要勾选的权限 action
-        this.permissions.forEach(permission => {
-          permission.selected = permissionsAction[permission.id] || []
-        })
-      }
-
-      this.$nextTick(() => {
-        this.form.setFieldsValue(pick(this.mdl, 'id', 'name', 'status', 'describe'))
-      })
-      console.log('this.mdl', this.mdl)
+    handleOk () {
+      this.visible = false
     },
     close () {
       this.$emit('close')
       this.visible = false
     },
-    handleOk () {
-      const _this = this
-      // 触发表单验证
-      this.form.validateFields((err, values) => {
-        // 验证表单没错误
-        if (!err) {
-          console.log('form values', values)
-
-          _this.confirmLoading = true
-          // 模拟后端请求 2000 毫秒延迟
-          new Promise((resolve) => {
-            setTimeout(() => resolve(), 2000)
-          }).then(() => {
-            // Do something
-            _this.$message.success('保存成功')
-            _this.$emit('ok')
-          }).catch(() => {
-            // Do something
-          }).finally(() => {
-            _this.confirmLoading = false
-            _this.close()
-          })
-        }
-      })
-    },
     handleCancel () {
       this.close()
     },
-    onChangeCheck (permission) {
-      permission.indeterminate = !!permission.selected.length && (permission.selected.length < permission.actionsOptions.length)
-      permission.checkedAll = permission.selected.length === permission.actionsOptions.length
-    },
-    onChangeCheckAll (e, permission) {
-      Object.assign(permission, {
-        selected: e.target.checked ? permission.actionsOptions.map(obj => obj.value) : [],
-        indeterminate: false,
-        checkedAll: e.target.checked
-      })
-    },
-    loadPermissions () {
-      const that = this
-      getPermissions().then(res => {
-        const result = res.result
-        that.permissions = result.map(permission => {
-          const options = actionToObject(permission.actionData)
-          permission.checkedAll = false
-          permission.selected = []
-          permission.indeterminate = false
-          permission.actionsOptions = options.map(option => {
-            return {
-              label: option.describe,
-              value: option.action
-            }
-          })
-          return permission
-        })
-      })
-    }
+
+    // loadPermissions () {
+    //   const that = this
+    //   getPermissions().then(res => {
+    //     const result = res.result
+    //     that.permissions = result.map(permission => {
+    //       const options = actionToObject(permission.actionData)
+    //       permission.checkedAll = false
+    //       permission.selected = []
+    //       permission.indeterminate = false
+    //       permission.actionsOptions = options.map(option => {
+    //         return {
+    //           label: option.describe,
+    //           value: option.action
+    //         }
+    //       })
+    //       return permission
+    //     })
+    //   })
+    // }
 
   }
 }

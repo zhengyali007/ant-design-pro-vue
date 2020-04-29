@@ -34,59 +34,99 @@ const info = (options) => {
         'roleId': 'admin',
         'permissionId': 'system',
         'permissionName': '系统管理',
-        'actions': '[{"action":"add","defaultCheck":false,"describe":"新增"},{"action":"query","defaultCheck":false,"describe":"查询"},{"action":"get","defaultCheck":false,"describe":"详情"},{"action":"update","defaultCheck":false,"describe":"修改"},{"action":"delete","defaultCheck":false,"describe":"删除"}]',
-        'actionEntitySet': [{
-          'action': 'add',
-          'describe': '新增',
-          'defaultCheck': false
-        }, {
-          'action': 'query',
-          'describe': '查询',
-          'defaultCheck': false
-        }, {
-          'action': 'get',
-          'describe': '详情',
-          'defaultCheck': false
-        }, {
+        'actions': [
+          {
+            'action': 'query',
+            'describe': '查询',
+            'defaultCheck': false
+          },
+          {
+            'action': 'add',
+            'describe': '新增',
+            'defaultCheck': false
+          },
+          {
+            'action': 'update',
+            'describe': '修改',
+            'defaultCheck': false
+          }, {
+            'action': 'delete',
+            'describe': '删除',
+            'defaultCheck': false
+          },{
+            'action': 'enable',
+            'describe': '是否禁用',
+            'defaultCheck': false
+          }],
+        'actionEntitySet': [
+          {
+            'action': 'query',
+            'describe': '查询',
+            'defaultCheck': false
+          },
+          {
+            'action': 'add',
+            'describe': '新增',
+            'defaultCheck': false
+          }, {
+            'action': 'delete',
+            'describe': '删除',
+            'defaultCheck': false
+          }, {
           'action': 'update',
           'describe': '修改',
           'defaultCheck': false
-        }, {
-          'action': 'delete',
-          'describe': '删除',
-          'defaultCheck': false
-        }],
-        'actionList': null,
-        'dataAccess': null
+          },{
+            'action': 'enable',
+            'describe': '是否禁用',
+            'defaultCheck': false
+          }],
       },  {
         'roleId': 'admin',
         'permissionId': 'example',
         'permissionName': '示例',
-        'actions': '[{"action":"add","defaultCheck":false,"describe":"新增"},{"action":"query","defaultCheck":false,"describe":"查询"},{"action":"get","defaultCheck":false,"describe":"详情"},{"action":"update","defaultCheck":false,"describe":"修改"},{"action":"delete","defaultCheck":false,"describe":"删除"}]',
-        'actionEntitySet': [{
-          'action': 'add',
-          'describe': '新增',
-          'defaultCheck': false
-        }, {
-          'action': 'query',
-          'describe': '查询',
-          'defaultCheck': false
-        }, {
-          'action': 'get',
-          'describe': '详情',
-          'defaultCheck': false
-        }, {
-          'action': 'update',
-          'describe': '修改',
-          'defaultCheck': false
-        }, {
-          'action': 'delete',
-          'describe': '删除',
-          'defaultCheck': false
-        }],
-        'actionList': null,
-        'dataAccess': null
-      },{
+        'actions': [
+          {
+            'action': 'query',
+            'describe': '查询',
+            'defaultCheck': false
+          },
+          {
+            'action': 'add',
+            'describe': '新增',
+            'defaultCheck': false
+          },
+          {
+            'action': 'update',
+            'describe': '修改',
+            'defaultCheck': false
+          }, {
+            'action': 'delete',
+            'describe': '删除',
+            'defaultCheck': false
+          }],
+        'actionEntitySet': [
+          {
+            'action': 'query',
+            'describe': '查询',
+            'defaultCheck': false
+          },
+          {
+            'action': 'add',
+            'describe': '新增',
+            'defaultCheck': false
+          },
+          {
+            'action': 'update',
+            'describe': '修改',
+            'defaultCheck': false
+          },{
+            'action': 'delete',
+            'describe': '删除',
+            'defaultCheck': false
+          }],
+      },
+      {
       'roleId': 'admin',
       'permissionId': 'dashboard',
       'permissionName': '仪表盘',

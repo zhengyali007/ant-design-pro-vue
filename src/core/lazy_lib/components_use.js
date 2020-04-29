@@ -46,7 +46,8 @@ import {
   Skeleton,
   Popconfirm,
   message,
-  notification
+  notification,
+  Tree
 } from 'ant-design-vue'
 // import VueCropper from 'vue-cropper'
 
@@ -87,6 +88,7 @@ Vue.use(Upload)
 Vue.use(Progress)
 Vue.use(Skeleton)
 Vue.use(Popconfirm)
+Vue.use(Tree)
 // Vue.use(VueCropper)
 Vue.use(notification)
 

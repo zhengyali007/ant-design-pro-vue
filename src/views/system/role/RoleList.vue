@@ -12,7 +12,7 @@
             <a-form-item label="状态">
               <a-select placeholder="请选择" default-value="0">
                 <a-select-option value="0">全部</a-select-option>
-                <a-select-option value="1">正常</a-select-option>
+                <a-select-option value="1">启用</a-select-option>
                 <a-select-option value="2">禁用</a-select-option>
               </a-select>
             </a-form-item>
@@ -26,8 +26,12 @@
         </a-row>
       </a-form>
     </div>
-
+    <div class="table-operator">
+      <a-button type="primary" icon="plus" v-action:add >新建</a-button>
+      <a-button type="danger" icon="minus" v-action:delete>删除</a-button>
+    </div>
     <s-table
+      rowKey="id"
       ref="table"
       size="default"
       :columns="columns"
@@ -44,7 +48,7 @@
             <a-col :span="4">
               <span>{{ role.permissionName }}：</span>
             </a-col>
-            <a-col :span="20" v-if="role.actionEntitySet.length > 0">
+            <a-col :span="20" v-if="role.actionEntitySet && role.actionEntitySet.length > 0">
               <a-tag color="cyan" v-for="(action, k) in role.actionEntitySet" :key="k">{{ action.describe }}</a-tag>
             </a-col>
             <a-col :span="20" v-else>-</a-col>
@@ -52,24 +56,16 @@
         </a-row>
       </div>
       <span slot="action" slot-scope="text, record">
-        <a @click="$refs.modal.edit(record)">编辑</a>
-        <a-divider type="vertical" />
-        <a-dropdown>
-          <a class="ant-dropdown-link">
-            更多 <a-icon type="down" />
-          </a>
-          <a-menu slot="overlay">
-            <a-menu-item>
-              <a href="javascript:;">详情</a>
-            </a-menu-item>
-            <a-menu-item>
-              <a href="javascript:;">禁用</a>
-            </a-menu-item>
-            <a-menu-item>
-              <a href="javascript:;">删除</a>
-            </a-menu-item>
-          </a-menu>
-        </a-dropdown>
+        <a  v-action:update @click="$refs.modal.openModal(record)">编辑</a>
+        <a-divider  v-action:delete type="vertical" />
+        <a  v-action:delete @click="$refs.modal.openModal(record)">删除</a>
+        <a-divider  v-action:enable type="vertical" />
+        <a  v-action:enable v-if="record.status == 1" >禁用</a>
+        <a  v-action:enable v-else >启用</a>
+      </span>
+      <span slot="status" slot-scope="text">
+        <a-tag v-if="text == 1" color="blue">启用</a-tag>
+        <a-tag v-else color="red">禁用</a-tag>
       </span>
     </s-table>
 
@@ -90,13 +86,10 @@ export default {
   },
   data () {
     return {
-      description: '列表使用场景：后台管理中的权限管理以及角色管理，可用于基于 RBAC 设计的角色权限控制，颗粒度细到每一个操作类型。',
-
+      description: '控制角色权限,这是自定义描述，可选，zyl',
       visible: false,
-
       form: null,
       mdl: {},
-
       // 高级搜索 展开/关闭
       advanced: false,
       // 查询参数
@@ -113,7 +106,8 @@ export default {
         },
         {
           title: '状态',
-          dataIndex: 'status'
+          dataIndex: 'status',
+          scopedSlots: { customRender: 'status' }
         },
         {
           title: '创建时间',

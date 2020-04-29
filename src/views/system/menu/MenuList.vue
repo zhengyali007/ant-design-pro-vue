@@ -49,7 +49,7 @@
           </template>
           <a-col :md="!advanced && 8 || 24" :sm="24">
             <span class="table-page-search-submitButtons" :style="advanced && { float: 'right', overflow: 'hidden' } || {} ">
-              <a-button type="primary" @click="$refs.table.refresh(true)">查询</a-button>
+              <a-button  v-action:query type="primary" @click="$refs.table.refresh(true)">查询</a-button>
               <a-button style="margin-left: 8px" @click="() => queryParam = {}">重置</a-button>
               <a @click="toggleAdvanced" style="margin-left: 8px">
                 {{ advanced ? '收起' : '展开' }}
@@ -62,13 +62,13 @@
     </div>
 
     <div class="table-operator">
-      <a-button type="primary" icon="plus" @click="$refs.createModal.add()">新建</a-button>
-      <a-button type="danger" icon="minus" @click="$refs.createModal.add()">删除</a-button>
+      <a-button type="primary" icon="plus" v-action:add @click="$refs.createModal.add()">新建</a-button>
+      <a-button type="danger" icon="minus" v-action:delete @click="$refs.createModal.add()">删除</a-button>
     </div>
     <s-table
       ref="table"
       size="default"
-      rowKey="id"
+      rowKey="key"
       :columns="columns"
       :data="loadData"
       :rowSelection="options.rowSelection"
@@ -86,14 +86,14 @@
 
       <span slot="action" slot-scope="text, record">
         <template>
-          <a @click="handleEdit(record)">编辑</a>
-          <a-divider type="vertical" />
-          <a @click="handleSub(record)">删除</a>
+          <a @click="handleEdit(record)" v-action:update>编辑</a>
+          <a-divider type="vertical" v-action:delete />
+          <a @click="handleSub(record)" v-action:delete>删除</a>
         </template>
       </span>
     </s-table>
-    <create-form ref="createModal" @ok="handleOk" />
-    <step-by-step-modal ref="modal" @ok="handleOk"/>
+    <create-form ref="createModal"   @ok="handleOk" />
+    <step-by-step-modal ref="modal"   @ok="handleOk"/>
   </a-card>
 </template>
 
@@ -136,7 +136,7 @@ export default {
         },
         {
           title: '菜单类型/按钮类型',
-          dataIndex: 'id',
+          dataIndex: 'key',
           customRender: (text,record) => {
             if(record.type == 1) {
               if(record.menuType == 1) {
@@ -178,6 +178,7 @@ export default {
         console.log('getMenuList.parameter', parameter)
         return getMenuList(Object.assign(parameter, this.queryParam))
           .then(res => {
+            this.$store.commit('SET_MENU', res.result.data)
             return res.result
           })
       },
