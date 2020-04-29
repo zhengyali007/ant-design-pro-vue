@@ -4,23 +4,22 @@
       <a-form layout="inline">
         <a-row :gutter="48">
           <a-col :md="8" :sm="24">
-            <a-form-item label="规则编号">
-              <a-input v-model="queryParam.id" placeholder=""/>
+            <a-form-item label="菜单名称">
+              <a-input v-model="queryParam.title" placeholder="请输入菜单名称"/>
             </a-form-item>
           </a-col>
           <a-col :md="8" :sm="24">
-            <a-form-item label="使用状态">
-              <a-select v-model="queryParam.status" placeholder="请选择" default-value="0">
-                <a-select-option value="0">全部</a-select-option>
-                <a-select-option value="1">关闭</a-select-option>
-                <a-select-option value="2">运行中</a-select-option>
+            <a-form-item label="所属类型">
+              <a-select v-model="queryParam.type" placeholder="请选择" default-value="0">
+                <a-select-option value="1">菜单</a-select-option>
+                <a-select-option value="2">按钮</a-select-option>
               </a-select>
             </a-form-item>
           </a-col>
           <template v-if="advanced">
             <a-col :md="8" :sm="24">
-              <a-form-item label="调用次数">
-                <a-input-number v-model="queryParam.callNo" style="width: 100%"/>
+              <a-form-item label="路径">
+                <a-input v-model="queryParam.path" placeholder="请输入路径"/>
               </a-form-item>
             </a-col>
             <a-col :md="8" :sm="24">
@@ -29,27 +28,27 @@
               </a-form-item>
             </a-col>
             <a-col :md="8" :sm="24">
-              <a-form-item label="使用状态">
-                <a-select v-model="queryParam.useStatus" placeholder="请选择" default-value="0">
-                  <a-select-option value="0">全部</a-select-option>
-                  <a-select-option value="1">关闭</a-select-option>
-                  <a-select-option value="2">运行中</a-select-option>
+              <a-form-item label="按钮类型">
+                <a-select v-model="queryParam.btnType" placeholder="请选择" default-value="0">
+                  <a-select-option value="1">操作栏按钮</a-select-option>
+                  <a-select-option value="2">行间按钮</a-select-option>
+                  <a-select-option value="3">操作栏和行间按钮</a-select-option>
                 </a-select>
               </a-form-item>
             </a-col>
             <a-col :md="8" :sm="24">
-              <a-form-item label="使用状态">
-                <a-select placeholder="请选择" default-value="0">
-                  <a-select-option value="0">全部</a-select-option>
-                  <a-select-option value="1">关闭</a-select-option>
-                  <a-select-option value="2">运行中</a-select-option>
+              <a-form-item label="菜单类型">
+                <a-select v-model="queryParam.menuType" placeholder="请选择" default-value="1">
+                  <a-select-option value="1">内部路由</a-select-option>
+                  <a-select-option value="2">内嵌iframe</a-select-option>
+                  <a-select-option value="3">外部路由</a-select-option>
                 </a-select>
               </a-form-item>
             </a-col>
           </template>
           <a-col :md="!advanced && 8 || 24" :sm="24">
             <span class="table-page-search-submitButtons" :style="advanced && { float: 'right', overflow: 'hidden' } || {} ">
-              <a-button  v-action:query type="primary" @click="$refs.table.refresh(true)">查询</a-button>
+              <a-button v-action:query type="primary" @click="$refs.table.refresh(true)">查询</a-button>
               <a-button style="margin-left: 8px" @click="() => queryParam = {}">重置</a-button>
               <a @click="toggleAdvanced" style="margin-left: 8px">
                 {{ advanced ? '收起' : '展开' }}
@@ -63,7 +62,7 @@
 
     <div class="table-operator">
       <a-button type="primary" icon="plus" v-action:add @click="$refs.createModal.add()">新建</a-button>
-      <a-button type="danger" icon="minus" v-action:delete @click="$refs.createModal.add()">删除</a-button>
+      <a-button type="danger" icon="minus" v-action:delete @click="showDeleteConfirm">删除</a-button>
     </div>
     <s-table
       ref="table"
@@ -74,26 +73,16 @@
       :rowSelection="options.rowSelection"
       :showPagination="false"
     >
-      <span slot="serial" slot-scope="text, record, index">
-        {{ index + 1 }}
-      </span>
-      <span slot="status" slot-scope="text">
-        <a-badge :status="text | statusTypeFilter" :text="text | statusFilter" />
-      </span>
-      <span slot="description" slot-scope="text">
-        <ellipsis :length="4" tooltip>{{ text }}</ellipsis>
-      </span>
-
       <span slot="action" slot-scope="text, record" class="table-action">
         <template>
-          <a @click="handleEdit(record)" v-action:edit>编辑</a>
-<!--          <a-divider type="vertical" v-action:delete />-->
-          <a @click="handleSub(record)" v-action:delete>删除</a>
+          <a  v-action:edit>编辑</a>
+          <!--          <a-divider type="vertical" v-action:delete />-->
+          <a @click="showDeleteConfirm(record)" v-action:delete>删除</a>
         </template>
       </span>
     </s-table>
-    <create-form ref="createModal"   @ok="handleOk" />
-    <step-by-step-modal ref="modal"   @ok="handleOk"/>
+    <create-form ref="createModal" @ok="handleOk" />
+    <step-by-step-modal ref="modal" @ok="handleOk"/>
   </a-card>
 </template>
 
@@ -132,26 +121,26 @@ export default {
         {
           title: '所属类型',
           dataIndex: 'type',
-          customRender: (text) => text == 1? '菜单': '按钮'
+          customRender: (text) => text == 1 ? '菜单' : '按钮'
         },
         {
           title: '菜单类型/按钮类型',
           dataIndex: 'key',
-          customRender: (text,record) => {
-            if(record.type == 1) {
-              if(record.menuType == 1) {
+          customRender: (text, record) => {
+            if (record.type == 1) {
+              if (record.menuType == 1) {
                 return '内部路由'
-              }else if(record.menuType == 2) {
+              } else if (record.menuType == 2) {
                 return '嵌入iframe'
-              }else {
+              } else {
                 return '外部路由'
               }
-            }else {
-              if(record.btnType == 1) {
+            } else {
+              if (record.btnType == 1) {
                 return '行按钮'
-              }else if(record.btnType == 2) {
+              } else if (record.btnType == 2) {
                 return '操作栏按钮'
-              }else {
+              } else {
                 return '行按钮和操作栏按钮'
               }
             }
@@ -160,11 +149,11 @@ export default {
 
         {
           title: '描述',
-          dataIndex: 'description',
+          dataIndex: 'description'
         },
         {
           title: '排序',
-          dataIndex: 'sort',
+          dataIndex: 'sort'
         },
         {
           title: '操作',
@@ -192,15 +181,6 @@ export default {
           onChange: this.onSelectChange
         }
       },
-      optionAlertShow: false
-    }
-  },
-  filters: {
-    statusFilter (type) {
-      return statusMap[type].text
-    },
-    statusTypeFilter (type) {
-      return statusMap[type].status
     }
   },
   created () {
@@ -209,7 +189,6 @@ export default {
   },
   methods: {
     tableOption () {
-      if (!this.optionAlertShow) {
         this.options = {
           alert: { show: true, clear: () => { this.selectedRowKeys = [] } },
           rowSelection: {
@@ -223,26 +202,22 @@ export default {
             })
           }
         }
-        this.optionAlertShow = true
-      } else {
-        this.options = {
-          alert: false,
-          rowSelection: null
-        }
-        this.optionAlertShow = false
-      }
     },
 
-    handleEdit (record) {
-      console.log(record)
-      this.$refs.modal.edit(record)
-    },
-    handleSub (record) {
-      if (record.status !== 0) {
-        this.$message.info(`${record.no} 订阅成功`)
-      } else {
-        this.$message.error(`${record.no} 订阅失败，规则已关闭`)
-      }
+    showDeleteConfirm (ids) {
+      const _this = this
+      this.$confirm({
+        title: '确认删除菜单吗?',
+        okText: '确定',
+        okType: 'danger',
+        cancelText: '取消',
+        onOk () {
+          _this.$message.success('删除成功')
+        },
+        onCancel () {
+          _this.$message.info('取消删除')
+        }
+      })
     },
     handleOk () {
       this.$refs.table.refresh()
