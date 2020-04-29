@@ -34,7 +34,7 @@ export default {
       confirmLoading: false,
       expandedKeys: [],
       autoExpandParent: true,
-      checkedKeys: ['1','2','3','4'],
+      checkedKeys: ['2','3'],
       selectedKeys: [],
       treeData:[],
     }
@@ -45,17 +45,13 @@ export default {
     },
   },
   created () {
-    this.treeData = this.$store.state.user.menu
-    // this.handleMenuList(menu);
 
   },
   methods: {
-    // handleMenuList(menu) {
-    //   menu.forEach(item=> {
-    //     menu.key = menu.id
-    //   })
-    // },
-    openModal() {
+    openModal(data) {
+      if(data) {
+        this.treeData = data
+      }
       this.visible = true
     },
     onExpand(expandedKeys) {
@@ -78,7 +74,6 @@ export default {
       this.visible = false
     },
     close () {
-      this.$emit('close')
       this.visible = false
     },
     handleCancel () {

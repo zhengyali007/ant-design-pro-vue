@@ -56,7 +56,7 @@
         </a-row>
       </div>
       <span slot="action" slot-scope="text, record">
-        <a  v-action:update @click="$refs.modal.openModal(record)">编辑</a>
+        <a  v-action:update @click="handleEdit(record)">编辑</a>
         <a-divider  v-action:delete type="vertical" />
         <a  v-action:delete @click="$refs.modal.openModal(record)">删除</a>
         <a-divider  v-action:enable type="vertical" />
@@ -77,6 +77,7 @@
 <script>
 import { STable } from '@/components'
 import RoleModal from './modules/RoleModal'
+import {getMenuList} from '../../../api/menu'
 
 export default {
   name: 'TableList',
@@ -135,16 +136,10 @@ export default {
   },
   methods: {
     handleEdit (record) {
-      this.mdl = Object.assign({}, record)
-
-      this.mdl.permissions.forEach(permission => {
-        permission.actionsOptions = permission.actionEntitySet.map(action => {
-          return { label: action.describe, value: action.action, defaultCheck: action.defaultCheck }
-        })
+      getMenuList().then((res)=>{
+        const data = res.result.data
+        this.$refs.modal.openModal(data)
       })
-
-      console.log(this.mdl)
-      this.visible = true
     },
     handleOk () {
       // 新增/修改 成功时，重载列表

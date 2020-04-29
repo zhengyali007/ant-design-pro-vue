@@ -9,9 +9,16 @@ export const asyncRouterMap = [
     name: 'index',
     component: BasicLayout,
     meta: { title: '首页' },
-    redirect: '/dashboard/workplace',
+    redirect: '/index/index',
     children: [
       // 自定义路由
+      // 0. 首页
+      {
+        path: 'index',
+        name:'index',
+        component: () => import('@/views/index/Index'),
+        meta:{title:'首页',keepAlive: true, icon: bxAnaalyse, permission: [ 'index' ]},
+      },
       // 1. 系统设置
       {
         path: 'system',

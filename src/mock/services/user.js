@@ -5,7 +5,7 @@ const info = (options) => {
   console.log('options', options)
   const userInfo = {
     'id': '4291d7da9005377ec9aec4a71ea837f',
-    'name': '天野远子',
+    'name': 'zhengyali',
     'username': 'admin',
     'password': '',
     'avatar': '/avatar2.jpg',
@@ -30,6 +30,13 @@ const info = (options) => {
     'createTime': 1497160610259,
     'deleted': 0,
     'permissions': [
+      {
+        'roleId': 'admin',
+        'permissionId': 'index',
+        'permissionName': '首页',
+        'actions': [],
+        'actionEntitySet': [],
+      },
       {
         'roleId': 'admin',
         'permissionId': 'system',

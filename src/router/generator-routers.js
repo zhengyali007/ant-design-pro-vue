@@ -15,6 +15,17 @@ const constantRouterComponents = {
   '500': () => import(/* webpackChunkName: "error" */ '@/views/exception/500'),
 
   // 你需要动态引入的页面组件
+
+  //自定义路由表 zyl
+  'Index':()=>import('@/views/index/Index'),
+  'Menu':()=>import('@/views/system/MenuList'),
+  'Role':()=>import('@/views/system/Role'),
+  'IframePage':()=>import('@/views/example/IframePage'),
+  'TablePage':()=>import('@/views/example/TablePage'),
+
+
+
+
   'Workplace': () => import('@/views/dashboard/Workplace'),
   'Analysis': () => import('@/views/dashboard/Analysis'),
 

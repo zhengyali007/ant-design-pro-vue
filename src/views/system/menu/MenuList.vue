@@ -178,7 +178,6 @@ export default {
         console.log('getMenuList.parameter', parameter)
         return getMenuList(Object.assign(parameter, this.queryParam))
           .then(res => {
-            this.$store.commit('SET_MENU', res.result.data)
             return res.result
           })
       },

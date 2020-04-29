@@ -2,6 +2,7 @@ import Vue from 'vue'
 import { login, getInfo, logout } from '@/api/login'
 import { ACCESS_TOKEN } from '@/store/mutation-types'
 import { welcome } from '@/utils/util'
+import {setCookie} from '@/utils/util'
 
 const user = {
   state: {
@@ -11,7 +12,6 @@ const user = {
     avatar: '',
     roles: [],
     info: {},
-    menu: [],
   },
 
   mutations: {
@@ -31,9 +31,6 @@ const user = {
     SET_INFO: (state, info) => {
       state.info = info
     },
-    SET_MENU: (state, menu) =>{
-      state.menu = menu
-    }
   },
 
   actions: {
@@ -42,8 +39,9 @@ const user = {
       return new Promise((resolve, reject) => {
         login(userInfo).then(response => {
           const result = response.result
-          Vue.ls.set(ACCESS_TOKEN, result.token, 7 * 24 * 60 * 60 * 1000)
-          commit('SET_TOKEN', result.token)
+          Vue.ls.set(ACCESS_TOKEN, result.token, 7 * 24 * 60 * 60 * 1000) // vue.ls存储到localstorage,持久化存储
+          setCookie('ACCESS_TOKEN', result.token) // 存入到cookie中
+          commit('SET_TOKEN', result.token)// 存入到vuex
           resolve()
         }).catch(error => {
           reject(error)
@@ -67,8 +65,8 @@ const user = {
               }
             })
             role.permissionList = role.permissions.map(permission => { return permission.permissionId })
-            commit('SET_ROLES', result.role)
-            commit('SET_INFO', result)
+            commit('SET_ROLES', result.role) // 用户角色权限信息
+            commit('SET_INFO', result) //用户基本信息
           } else {
             reject(new Error('getInfo: roles must be a non-null array !'))
           }
@@ -91,6 +89,7 @@ const user = {
         }).catch(() => {
           resolve()
         }).finally(() => {
+          //清除token和角色信息
           commit('SET_TOKEN', '')
           commit('SET_ROLES', [])
           Vue.ls.remove(ACCESS_TOKEN)
