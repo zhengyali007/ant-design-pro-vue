@@ -130,6 +130,12 @@ export const asyncRouterMap = [
             name: 'profile',
             component: () => import('@/views/example/profile/Index'),
             meta: { title: '详情页', icon: 'profile', permission: [ 'profile' ] }
+          },
+          // 2.5 外链示例
+          {
+            path: 'https://www.baidu.com/',
+            name: 'link',
+            meta: { title: '外部链接', icon: 'link', target: '_blank' }
           }
         ]
       },

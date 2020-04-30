@@ -24,6 +24,7 @@ export default {
   },
   data(){
     return {
+      description: 'iframe弹框为自定义组件，参数为title, width,height,url,okText以及提交按钮的回调，详情见本页面代码',
       url: 'https://picsum.photos/',
       height: '90%',
       width: '100%',

@@ -40,7 +40,7 @@
     >
       <span slot="action" slot-scope="text, record" class="table-action">
         <a v-action:edit @click="handleEdit(record)">编辑</a>
-        <a v-action:delete @click="$refs.modal.openModal(record)">删除</a>
+        <a v-action:delete>删除</a>
         <a v-action:enable v-if="record.status == 1" >禁用</a>
         <a v-action:enable v-else >启用</a>
       </span>
@@ -68,7 +68,6 @@ export default {
   },
   data () {
     return {
-      description: '控制角色权限,这是自定义描述，可选，zyl',
       visible: false,
       form: null,
       mdl: {},

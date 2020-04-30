@@ -12,6 +12,18 @@ import { builder, getQueryParameters } from '../util'
 const menu = (options) => {
   return builder({
     'data': [
+      //首页
+      {
+        'key': '0',
+        'icon': '',
+        'title': '首页',
+        'url': '/index',
+        'menuType': 1,
+        'type': 1,
+        'btnType': 1,
+        'description': '',
+        'sort': 1
+      },
       // 系统设置
       {
         'key': '1',
@@ -82,6 +94,66 @@ const menu = (options) => {
             'sort': 2
           }
         ]
+      },
+      // 示例
+      {
+        'key': '7',
+        'icon': 'dashboard',
+        'title': '示例',
+        'url': '/example',
+        'type': 1,
+        'menuType': 1,
+        'btnType': 1,
+        'description': '这是示例菜单',
+        'sort': 1,
+        'children': [
+          {
+            'key': '8',
+            'icon': '',
+            'title': '表单页',
+            'url': '/example/form',
+            'type': 1,
+            'menuType': 1,
+            'btnType': 1,
+            'description': '表单页',
+            'sort': 1,
+            'children': [
+              {
+                'key': '9',
+                'parentId': 'system-menu',
+                'icon': 'add',
+                'title': '编辑',
+                'url': '/example/form/edit',
+                'menuType': 1,
+                'btnType': 1,
+                'type': 2,
+                'sort': 2
+              }
+            ]
+          },
+          {
+            'key': '10',
+            'icon': '',
+            'title': '列表页',
+            'url': '/example/list',
+            'menuType': 1,
+            'type': 1,
+            'btnType': 1,
+            'description': '',
+            'sort': 2
+          },
+          {
+            'key': '11',
+            'icon': '',
+            'title': '详情页',
+            'url': '/example/profile',
+            'menuType': 1,
+            'type': 1,
+            'btnType': 1,
+            'description': '',
+            'sort': 2
+          }
+        ]
       }
     ]
   })
@@ -91,11 +163,11 @@ const checkedMenu = (options) => {
   const id = getQueryParameters(options).id
   let checked = []
   if (id == 'admin') { // admin
-    checked = ['1']
+    checked = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '10']
   } else { // user
-    checked = []
+    checked = ['0', '10']
   }
-  return builder({data: checked})
+  return builder({ data: checked })
 }
 
 Mock.mock(/\/menu\/list/, 'get', menu)
