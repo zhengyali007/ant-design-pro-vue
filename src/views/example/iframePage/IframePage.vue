@@ -16,7 +16,7 @@
 </template>
 
 <script>
-import IframeModel from '../../components/IframeDialog/IframeDialog'
+import IframeModel from '../../../components/IframeDialog/IframeDialog'
 export default {
   name: 'IframePage',
   components:{
