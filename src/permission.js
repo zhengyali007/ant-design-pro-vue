@@ -36,15 +36,16 @@ router.beforeEach((to, from, next) => {
               // 动态添加可访问路由表
               router.addRoutes(store.getters.addRouters)
               // 请求带有 redirect 重定向时，登录自动重定向到该地址
-              const redirect = decodeURIComponent(from.query.redirect || to.path)
-              if (to.path === redirect) {
-                // hack方法 确保addRoutes已完成 ,set the replace: true so the navigation will not leave a history record
-                next({ ...to, replace: true })
-              } else {
-                // 跳转到目的路由
-                next({ path: defaultRoutePath})
-                // next({ path: redirect })
-              }
+              next({ path: defaultRoutePath})
+              // const redirect = decodeURIComponent(from.query.redirect || to.path)
+              // if (to.path === redirect) {
+              //   // hack方法 确保addRoutes已完成 ,set the replace: true so the navigation will not leave a history record
+              //   next({ ...to, replace: true })
+              // } else {
+              //   // 跳转到目的路由
+              //   next({ path: defaultRoutePath})
+              //   // next({ path: redirect })
+              // }
             })
           })
           .catch(() => {

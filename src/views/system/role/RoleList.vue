@@ -36,30 +36,13 @@
       size="default"
       :columns="columns"
       :data="loadData"
+      :rowSelection="options.rowSelection"
     >
-      <div
-        slot="expandedRowRender"
-        slot-scope="record"
-        style="margin: 0">
-        <a-row
-          :gutter="24"
-          :style="{ marginBottom: '12px' }">
-          <a-col :span="12" v-for="(role, index) in record.permissions" :key="index" :style="{ marginBottom: '12px' }">
-            <a-col :span="4">
-              <span>{{ role.permissionName }}：</span>
-            </a-col>
-            <a-col :span="20" v-if="role.actionEntitySet && role.actionEntitySet.length > 0">
-              <a-tag color="cyan" v-for="(action, k) in role.actionEntitySet" :key="k">{{ action.describe }}</a-tag>
-            </a-col>
-            <a-col :span="20" v-else>-</a-col>
-          </a-col>
-        </a-row>
-      </div>
       <span slot="action" slot-scope="text, record" class="table-action">
-        <a  v-action:edit @click="handleEdit(record)">编辑</a>
-        <a  v-action:delete @click="$refs.modal.openModal(record)">删除</a>
-        <a  v-action:enable v-if="record.status == 1" >禁用</a>
-        <a  v-action:enable v-else >启用</a>
+        <a v-action:edit @click="handleEdit(record)">编辑</a>
+        <a v-action:delete @click="$refs.modal.openModal(record)">删除</a>
+        <a v-action:enable v-if="record.status == 1" >禁用</a>
+        <a v-action:enable v-else >启用</a>
       </span>
       <span slot="status" slot-scope="text">
         <a-tag v-if="text == 1" color="blue">启用</a-tag>
@@ -75,7 +58,7 @@
 <script>
 import { STable } from '@/components'
 import RoleModal from './modules/RoleModal'
-import {getMenuList} from '../../../api/menu'
+import { getMenuList, getCheckedMenuList } from '../../../api/menu'
 
 export default {
   name: 'TableList',
@@ -129,26 +112,39 @@ export default {
       },
 
       selectedRowKeys: [],
-      selectedRows: []
+      selectedRows: [],
+      options: {
+        rowSelection: {
+          // selectedRowKeys: this.selectedRowKeys,
+          // onChange: this.onSelectChange
+        }
+      },
+      menuList: []
     }
   },
+  mounted () {
+    this.getMenu()
+  },
   methods: {
+    getMenu () {
+      getMenuList().then((res) => {
+        this.menuList = res.result.data
+      })
+    },
     handleEdit (record) {
-      getMenuList().then((res)=>{
+      console.log(record.id)
+      getCheckedMenuList({ id: record.id }).then((res) => {
         const data = res.result.data
-        this.$refs.modal.openModal(data)
+        this.$refs.modal.openModal({ menu: this.menuList, checked: data })
       })
     },
     handleOk () {
       // 新增/修改 成功时，重载列表
       this.$refs.table.refresh()
     },
-    onChange (selectedRowKeys, selectedRows) {
+    onSelectChange (selectedRowKeys, selectedRows) {
       this.selectedRowKeys = selectedRowKeys
       this.selectedRows = selectedRows
-    },
-    toggleAdvanced () {
-      this.advanced = !this.advanced
     }
   },
   watch: {

@@ -10,13 +10,22 @@ import { axios } from '@/utils/request'
 
 const api = {
   list: '/menu/list',
+  checkedMenu: 'menu/checkedMenu'
 }
 
 export default api
 
 export function getMenuList (parameter) {
   return axios({
-    url:'/menu/list',
+    url: api.list,
+    method: 'get',
+    params: parameter
+  })
+}
+
+export function getCheckedMenuList (parameter) {
+  return axios({
+    url: api.checkedMenu,
     method: 'get',
     params: parameter
   })

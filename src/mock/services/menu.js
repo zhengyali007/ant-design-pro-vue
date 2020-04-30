@@ -7,12 +7,12 @@
  */
 
 import Mock from 'mockjs2'
-import { builder,getQueryParameters } from '../util'
+import { builder, getQueryParameters } from '../util'
 
-const menu = (options) =>{
+const menu = (options) => {
   return builder({
-    'data':[
-      //系统设置
+    'data': [
+      // 系统设置
       {
         'key': '1',
         'icon': 'dashboard',
@@ -21,9 +21,9 @@ const menu = (options) =>{
         'type': 1, // 1路由 2按钮
         'menuType': 1, // 1内部路由 2内部嵌入iframe 3外部路由 （type为1时有效）
         'btnType': 1, // 1行按钮 2操作栏按钮 3行按钮和操作栏按钮（type为2时有效）
-        'description':'这是系统设置菜单',
+        'description': '这是系统设置菜单',
         'sort': 1,
-        'children':[
+        'children': [
           {
             'key': '2',
             'icon': '',
@@ -32,7 +32,7 @@ const menu = (options) =>{
             'type': 1,
             'menuType': 1,
             'btnType': 1,
-            'description':'菜单管理描述',
+            'description': '菜单管理描述',
             'sort': 1,
             'children': [
               {
@@ -43,7 +43,7 @@ const menu = (options) =>{
                 'menuType': 1,
                 'type': 2,
                 'btnType': 2,
-                'sort': 1,
+                'sort': 1
 
               },
               {
@@ -55,7 +55,7 @@ const menu = (options) =>{
                 'menuType': 1,
                 'btnType': 1,
                 'type': 2,
-                'sort': 2,
+                'sort': 2
               },
               {
                 'key': '5',
@@ -66,8 +66,8 @@ const menu = (options) =>{
                 'url': '/system/menu/remove',
                 'menuType': 1,
                 'type': 2,
-                'sort': 3,
-              },
+                'sort': 3
+              }
             ]
           },
           {
@@ -78,13 +78,25 @@ const menu = (options) =>{
             'menuType': 1,
             'type': 1,
             'btnType': 1,
-            'description':'',
-            'sort': 2,
-          },
+            'description': '',
+            'sort': 2
+          }
         ]
-      },
-    ],
+      }
+    ]
   })
 }
 
+const checkedMenu = (options) => {
+  const id = getQueryParameters(options).id
+  let checked = []
+  if (id == 'admin') { // admin
+    checked = ['1']
+  } else { // user
+    checked = []
+  }
+  return builder({data: checked})
+}
+
 Mock.mock(/\/menu\/list/, 'get', menu)
+Mock.mock(/\/menu\/checkedMenu/, 'get', checkedMenu)

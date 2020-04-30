@@ -10,7 +10,7 @@
     <a-tree
       checkable
       @expand="onExpand"
-      :expandedKeys="expandedKeys"
+      defaultExpandAll
       :autoExpandParent="autoExpandParent"
       v-model="checkedKeys"
       @select="onSelect"
@@ -22,50 +22,48 @@
 
 <script>
 
-import { getPermissions } from '@/api/manage'
-import { actionToObject } from '@/utils/permissions'
-import pick from 'lodash.pick'
 
 export default {
   name: 'RoleModal',
   data () {
     return {
-      visible:false,
+      visible: false,
       confirmLoading: false,
       expandedKeys: [],
       autoExpandParent: true,
-      checkedKeys: ['2','3'],
+      checkedKeys: [],
       selectedKeys: [],
-      treeData:[],
+      treeData: []
     }
   },
   watch: {
-    checkedKeys(val) {
+    checkedKeys (val) {
       console.log('onCheck', val)
-    },
+    }
   },
   created () {
 
   },
   methods: {
-    openModal(data) {
-      if(data) {
-        this.treeData = data
+    openModal (data) {
+      if (data) {
+        this.treeData = data.menu
+        this.checkedKeys = data.checked
       }
       this.visible = true
     },
-    onExpand(expandedKeys) {
+    onExpand (expandedKeys) {
       console.log('onExpand', expandedKeys)
       // if not set autoExpandParent to false, if children expanded, parent can not collapse.
       // or, you can remove all expanded children keys.
       this.expandedKeys = expandedKeys
       this.autoExpandParent = false
     },
-    onCheck(checkedKeys) {
+    onCheck (checkedKeys) {
       console.log('onCheck', checkedKeys)
       this.checkedKeys = checkedKeys
     },
-    onSelect(selectedKeys, info) {
+    onSelect (selectedKeys, info) {
       console.log('onSelect', info)
       this.selectedKeys = selectedKeys
     },
@@ -78,7 +76,7 @@ export default {
     },
     handleCancel () {
       this.close()
-    },
+    }
 
     // loadPermissions () {
     //   const that = this
